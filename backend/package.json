@@ -1,0 +1,19 @@
+{
+  "name": "job-search-backend",
+  "version": "1.0.0",
+  "description": "Node.js backend for Job Searching Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "init-db": "node ../database/migrations/init_db.js",
+    "init-db:interactive": "node ../database/migrations/init_db_interactive.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.6.0"
+  }
+}

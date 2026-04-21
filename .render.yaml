@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: job-search-backend
+    env: docker
+    plan: starter
+    branch: main
+    autoDeploy: true
+    dockerfilePath: backend/Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DB_HOST
+        fromSecret: DB_HOST
+      - key: DB_USER
+        fromSecret: DB_USER
+      - key: DB_PASSWORD
+        fromSecret: DB_PASSWORD
+      - key: DB_NAME
+        fromSecret: DB_NAME
+      - key: JWT_SECRET
+        fromSecret: JWT_SECRET
+      - key: CORS_ORIGIN
+        fromSecret: CORS_ORIGIN
+
+# Optional managed database on Render
+# databases:
+#   - name: job-search-db
+#     engine: mysql
+#     version: '8.0'
+#     plan: starter
