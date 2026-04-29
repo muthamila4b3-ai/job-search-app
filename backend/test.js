@@ -81,7 +81,16 @@ async function runTests() {
   await test('GET / - Root route', async () => {
     const res = await makeRequest('GET', '/');
     assert(res.status === 200, `Expected 200, got ${res.status}`);
-    assert(res.body.message && res.body.message.includes('🚀'), 'Root route should return welcome message');
+    assert(res.body.success === true, 'Should have success true');
+    assert(res.body.data.message && res.body.data.message.includes('🚀'), 'Root route should return welcome message');
+  });
+
+  // 1.5. Test Health Check
+  await test('GET /api/health - Health check', async () => {
+    const res = await makeRequest('GET', '/api/health');
+    assert(res.status === 200, `Expected 200, got ${res.status}`);
+    assert(res.body.success === true, 'Should have success true');
+    assert(res.body.data.status === 'healthy', 'Should return healthy status');
   });
 
   // 2. Test Register
@@ -91,7 +100,8 @@ async function runTests() {
       password: 'TestPassword123',
     });
     assert(res.status === 201, `Expected 201, got ${res.status}`);
-    assert(res.body.message && res.body.message.includes('successfully'), 'Should return success message');
+    assert(res.body.success === true, 'Should have success true');
+    assert(res.body.data.message && res.body.data.message.includes('successfully'), 'Should return success message');
   });
 
   // 3. Test Register Validation
@@ -109,9 +119,10 @@ async function runTests() {
       password: 'password123',
     });
     assert(res.status === 200, `Expected 200, got ${res.status}`);
-    assert(res.body.token, 'Should return JWT token');
-    assert(res.body.subscription_plan, 'Should return subscription plan');
-    authToken = res.body.token;
+    assert(res.body.success === true, 'Should have success true');
+    assert(res.body.data.token, 'Should return JWT token');
+    assert(res.body.data.subscription_plan, 'Should return subscription plan');
+    authToken = res.body.data.token;
   });
 
   // 5. Test Login Validation
@@ -127,9 +138,10 @@ async function runTests() {
   await test('GET /api/profile - Get user profile (with token)', async () => {
     const res = await makeRequest('GET', '/api/profile', null, authToken);
     assert(res.status === 200, `Expected 200, got ${res.status}`);
-    assert(res.body.id, 'Should return user ID');
-    assert(res.body.email, 'Should return user email');
-    userId = res.body.id;
+    assert(res.body.success === true, 'Should have success true');
+    assert(res.body.data.id, 'Should return user ID');
+    assert(res.body.data.email, 'Should return user email');
+    userId = res.body.data.id;
   });
 
   // 7. Test Profile without Token
@@ -142,14 +154,16 @@ async function runTests() {
   await test('GET /api/jobs - Fetch all jobs', async () => {
     const res = await makeRequest('GET', '/api/jobs');
     assert(res.status === 200, `Expected 200, got ${res.status}`);
-    assert(Array.isArray(res.body), 'Should return an array of jobs');
+    assert(res.body.success === true, 'Should have success true');
+    assert(Array.isArray(res.body.data), 'Should return an array of jobs');
   });
 
   // 9. Test Subscriptions List
   await test('GET /api/subscriptions - Fetch subscription plans', async () => {
     const res = await makeRequest('GET', '/api/subscriptions');
     assert(res.status === 200, `Expected 200, got ${res.status}`);
-    assert(Array.isArray(res.body), 'Should return an array of plans');
+    assert(res.body.success === true, 'Should have success true');
+    assert(Array.isArray(res.body.data), 'Should return an array of plans');
   });
 
   // 10. Test Apply for Job

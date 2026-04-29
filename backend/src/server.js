@@ -62,7 +62,7 @@ function logRequest(method, path, status = null) {
 
 // Error handler utility
 function sendError(res, statusCode, message, details = null) {
-  const error = { message };
+  const error = { success: false, message };
   if (NODE_ENV === 'development' && details) {
     error.details = details;
   }
@@ -115,18 +115,24 @@ function authenticateToken(req, res, next) {
 // ==================== ROOT ROUTE ====================
 app.get('/', (req, res) => {
   res.status(200).json({
-    message: '🚀 Job Search Backend is Running',
-    version: '1.0.0',
-    timestamp: new Date().toISOString(),
-    environment: NODE_ENV,
+    success: true,
+    data: {
+      message: '🚀 Job Search Backend is Running',
+      version: '1.0.0',
+      timestamp: new Date().toISOString(),
+      environment: NODE_ENV,
+    },
   });
 });
 
 // ==================== HEALTH CHECK ====================
 app.get('/api/health', (req, res) => {
   res.status(200).json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
+    success: true,
+    data: {
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+    },
   });
 });
 
@@ -156,8 +162,10 @@ app.post('/api/auth/register', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'User registered successfully',
-      email,
+      data: {
+        message: 'User registered successfully',
+        email,
+      },
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -202,8 +210,10 @@ app.post('/api/auth/login', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      token,
-      subscription_plan: user.subscription_plan,
+      data: {
+        token,
+        subscription_plan: user.subscription_plan,
+      },
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -223,7 +233,10 @@ app.get('/api/profile', authenticateToken, async (req, res) => {
       return sendError(res, 404, 'User not found');
     }
 
-    res.status(200).json(rows[0]);
+    res.status(200).json({
+      success: true,
+      data: rows[0],
+    });
   } catch (error) {
     console.error('Profile error:', error);
     sendError(res, 500, 'Failed to fetch profile', error.message);
@@ -234,7 +247,10 @@ app.get('/api/profile', authenticateToken, async (req, res) => {
 app.get('/api/jobs', async (req, res) => {
   try {
     const [jobs] = await db.query('SELECT * FROM jobs ORDER BY id DESC');
-    res.status(200).json(jobs);
+    res.status(200).json({
+      success: true,
+      data: jobs,
+    });
   } catch (error) {
     console.error('Jobs error:', error);
     sendError(res, 500, 'Failed to fetch jobs', error.message);
@@ -266,8 +282,10 @@ app.post('/api/jobs/:jobId/apply', authenticateToken, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Applied successfully',
-      jobId: parseInt(jobId),
+      data: {
+        message: 'Applied successfully',
+        jobId: parseInt(jobId),
+      },
     });
   } catch (error) {
     console.error('Apply error:', error);
@@ -279,7 +297,10 @@ app.post('/api/jobs/:jobId/apply', authenticateToken, async (req, res) => {
 app.get('/api/subscriptions', async (req, res) => {
   try {
     const [plans] = await db.query('SELECT * FROM subscription_plans');
-    res.status(200).json(plans);
+    res.status(200).json({
+      success: true,
+      data: plans,
+    });
   } catch (error) {
     console.error('Subscriptions error:', error);
     sendError(res, 500, 'Failed to fetch subscriptions', error.message);
@@ -311,8 +332,10 @@ app.post('/api/subscriptions/subscribe', authenticateToken, async (req, res) => 
 
     res.status(200).json({
       success: true,
-      message: 'Subscription updated',
-      plan: plans[0].name,
+      data: {
+        message: 'Subscription updated',
+        subscription_plan: plans[0].name,
+      },
     });
   } catch (error) {
     console.error('Subscribe error:', error);
