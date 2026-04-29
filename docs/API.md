@@ -19,11 +19,14 @@ Authorization: Bearer <your_jwt_token>
 **GET** `/api/health`
 - **Description**: Check if the API is running
 - **Auth**: Not required
-- **Response**:
+- **Response** (200):
 ```json
 {
-  "status": "ok",
-  "timestamp": "2024-04-16T10:30:00Z"
+  "success": true,
+  "data": {
+    "status": "healthy",
+    "timestamp": "2024-04-16T10:30:00Z"
+  }
 }
 ```
 
@@ -42,8 +45,10 @@ Authorization: Bearer <your_jwt_token>
 ```json
 {
   "success": true,
-  "message": "User registered successfully",
-  "email": "user@example.com"
+  "data": {
+    "message": "User registered successfully",
+    "email": "user@example.com"
+  }
 }
 ```
 - **Validation**:
@@ -66,8 +71,10 @@ Authorization: Bearer <your_jwt_token>
 ```json
 {
   "success": true,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "subscription_plan": "Silver"
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "subscription_plan": "Silver"
+  }
 }
 ```
 - **Error** (401): Invalid credentials
@@ -79,9 +86,12 @@ Authorization: Bearer <your_jwt_token>
 - **Response** (200):
 ```json
 {
-  "id": 1,
-  "email": "user@example.com",
-  "subscription_plan": "Silver"
+  "success": true,
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "subscription_plan": "Silver"
+  }
 }
 ```
 
@@ -91,18 +101,21 @@ Authorization: Bearer <your_jwt_token>
 - **Auth**: Not required
 - **Response** (200):
 ```json
-[
-  {
-    "id": 1,
-    "title": "Frontend Developer",
-    "company": "Neon Labs",
-    "location": "Remote",
-    "description": "Build responsive UI...",
-    "salary": "$70k - $90k",
-    "remote": true,
-    "created_at": "2024-04-16T10:00:00Z"
-  }
-]
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "title": "Frontend Developer",
+      "company": "Neon Labs",
+      "location": "Remote",
+      "description": "Build responsive UI...",
+      "salary": "$70k - $90k",
+      "remote": true,
+      "created_at": "2024-04-16T10:00:00Z"
+    }
+  ]
+}
 ```
 
 ### 6. Apply for Job
@@ -115,8 +128,10 @@ Authorization: Bearer <your_jwt_token>
 ```json
 {
   "success": true,
-  "message": "Applied successfully",
-  "jobId": 1
+  "data": {
+    "message": "Applied successfully",
+    "jobId": 1
+  }
 }
 ```
 - **Errors**:
@@ -130,14 +145,18 @@ Authorization: Bearer <your_jwt_token>
 - **Auth**: Not required
 - **Response** (200):
 ```json
-[
-  {
-    "id": 1,
-    "name": "Silver",
-    "price": "$9.99/mo",
-    "benefits": "Basic job alerts, Standard applications"
-  }
-]
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Silver",
+      "price": "$9.99/mo",
+      "benefits": "Basic job alerts, Standard applications"
+    }
+  ]
+}
+```
 ```
 
 ### 8. Subscribe to Plan
@@ -154,8 +173,10 @@ Authorization: Bearer <your_jwt_token>
 ```json
 {
   "success": true,
-  "message": "Subscription updated",
-  "plan": "Gold"
+  "data": {
+    "message": "Subscription updated",
+    "subscription_plan": "Gold"
+  }
 }
 ```
 - **Errors**:
@@ -179,6 +200,7 @@ Authorization: Bearer <your_jwt_token>
 ## Error Response Format
 ```json
 {
+  "success": false,
   "message": "Error description"
 }
 ```
