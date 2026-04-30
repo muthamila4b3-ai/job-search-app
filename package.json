@@ -1,6 +1,19 @@
 {
+  "name": "job-search-app",
+  "version": "1.0.0",
+  "description": "Monorepo root for the Job Search App",
+  "main": "backend/src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "postinstall": "npm install --prefix backend"
+  },
   "dependencies": {
-    "bcryptjs": "^3.0.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.22.0"
   }
 }
