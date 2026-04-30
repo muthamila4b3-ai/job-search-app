@@ -2,7 +2,7 @@
   "name": "job-search-backend",
   "version": "1.0.0",
   "description": "Node.js backend for Job Searching Application",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "init-db": "node ../database/migrations/init_db.js",
